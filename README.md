@@ -51,4 +51,9 @@ Defined inside `browser_mcp.json` using:
   }
 }
 ```
+## ⚙️ How to Run
+### Clone this repository
+```
+https://github.com/Saad7912/Model-Context-Protocol.git
+```
 
