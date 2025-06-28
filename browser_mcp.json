@@ -1,0 +1,38 @@
+{
+    "mcpServers": {
+      "duckduckgo-search": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "duckduckgo-mcp-server"
+      ]
+  },
+    "weather": {
+    "command": "npx",
+      "args": [
+          "-y",
+          "@h1deya/mcp-server-weather"
+      ]
+  },
+   "MongoDB": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mongodb-mcp-server",
+        "--connectionString",
+        "mongodb://localhost:27017/MCP_Sample"
+      ]
+    },
+    "mongo": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--with",
+        "mcp[cli]",
+        "mcp",
+        "run",
+        "C:\\Users\\G3NZ\\Summer2025\\MCP_DataBase\\mcp_tools\\mongo_tools.py"
+      ]
+    }
+    }
+  }
