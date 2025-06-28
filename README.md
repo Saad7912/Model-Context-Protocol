@@ -56,4 +56,17 @@ Defined inside `browser_mcp.json` using:
 ```
 https://github.com/Saad7912/Model-Context-Protocol.git
 ```
+### Install dependencies
+```
+pip install -r requirements.txt
+```
+### Set your Groq API key
+Create a .env file in the root and add:
+```
+GROQ_API_KEY=your-groq-api-key-here
+```
+### Run the app
+```
+python app.py
+```
 
