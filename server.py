@@ -2,12 +2,14 @@ from mcp.server.fastmcp import FastMCP
 from pymongo import MongoClient
 from bson.json_util import dumps
 from typing import Literal, Dict, Any, Optional
+import argparse
+import uvicorn
 
 # Initialize MCP server
 mcp = FastMCP(
     name="Simple MongoDB MCP Server",
     description="A server that interacts with a MongoDB database using MCP",
-    host="0.0.0.0",   # Allow access from other devices
+    host="0.0.0.0",   
     port=3333         # Custom port
 )
 
@@ -42,6 +44,19 @@ def mongo_action(
 
     else:
         return {"error": "Unknown or unsupported action"}
+    
 
-print(" MCP server is running on http://0.0.0.0:3333 (IP 10.1.7.182)")
-mcp.run()
+# if __name__ == "__main__":
+#     print("MCP server is running on http://0.0.0.0:3333 (IP 10.1.7.110)")
+#     # mcp.run()
+#     mcp.run(transport="streamable-http")
+#     # mcp.run(mcp.streamable_http_app,host="localhost", port=3333)
+
+
+if __name__ == "__main__":
+    print("MCP server is running on http://0.0.0.0:3333 (IP 10.1.7.110)")
+    parser = argparse.ArgumentParser(description="Run MCP Streamable HTTP based server")
+    parser.add_argument("--port", type=int, default=3333, help="Localhost port to listen on")
+    args = parser.parse_args()
+
+    uvicorn.run(mcp.streamable_http_app, host="0.0.0.0", port=args.port)
