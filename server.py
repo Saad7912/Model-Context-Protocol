@@ -48,9 +48,8 @@ def mongo_action(
 
 # if __name__ == "__main__":
 #     print("MCP server is running on http://0.0.0.0:3333 (IP 10.1.7.110)")
-#     # mcp.run()
-#     mcp.run(transport="streamable-http")
-#     # mcp.run(mcp.streamable_http_app,host="localhost", port=3333)
+#     mcp.run()
+
 
 
 if __name__ == "__main__":
