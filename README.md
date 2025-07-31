@@ -1,72 +1,115 @@
-# 🧠 MCP-Based LLM Agent with Tool Use
+# 🧠 MCP-Based LLM Agent and FastAPI MongoDB Server
 
-This project demonstrates a **Model Context Protocol (MCP)**-enabled conversational agent powered by **LangChain** and **Groq's LLMs**, with support for external tools like **DuckDuckGo search**, **weather**, and **MongoDB** access.
-
-## 🚀 Features
-
-- **Interactive Chat Interface** with memory support
-- **Dynamic tool usage** via MCP (web search, weather, MongoDB)
-- **Runs external tools** using MCP servers defined in `browser_mcp.json`
-- Powered by **Groq's Qwen-QWQ-32B model** using LangChain
+This project combines a **Model Context Protocol (MCP)**-enabled conversational agent powered by LangChain and Groq's LLMs with a **FastAPI MongoDB server** for managing collections. The agent uses MCP servers for tools (web search, weather, MongoDB), while the FastAPI server provides REST endpoints for MongoDB operations.
 
 
-## 🧩 What is Model Context Protocol (MCP)?
+## Features
+### LLM Agent
+- Interactive chat interface with memory support.
+- Dynamic tool usage via MCP (DuckDuckGo search, Weather API, MongoDB).
+- Powered by Groq’s Qwen-QWQ-32B model using LangChain.
+- Configured via browser_mcp.json for MCP servers.
 
-**Model Context Protocol (MCP)** is a lightweight interface for connecting LLMs with external tools (like APIs or databases). The **MCP Server** handles tool execution and sends results back to the LLM agent, enabling it to reason and respond based on real-world data.
+### FastAPI MongoDB Server
+- /find: Search documents using any field (e.g., name, source_code).
+- /insert: Add documents with any fields to a collection.
+- /schema: Get field names and data types of a collection.
+- Supports MongoDB’s schemaless nature for flexible queries and inserts.
+- Works with MCP Inspector UI and curl.
 
-## 🛠️ Tools Used (via MCP Servers)
+  ## Prerequisites
+  - **Python 3.9+:** Install from python.org.
+  - **MongoDB:** Install locally or use MongoDB Atlas (mongodb://localhost:27017).
+  - **Node.js:** For MCP servers like duckduckgo-mcp-server and @h1deya/mcp-server-weather.
+  - **Python packages:**
+    - **Agent:** langchain, langchain-groq, mcp[cli].
+    - **FastAPI:** fastapi, pymongo, pydantic, uvicorn, fastapi_mcp.
+  - **MCP Inspector:** For UI testing, accessible via VS Code Simple Browser or Chrome.
+  - **Groq API Key:** Required for the LLM agent.
+ 
+  ## Installation
+  1. **Clone the repository:**
+  ```
+  git clone https://github.com/Saad7912/Model-Context-Protocol.git
+  cd Model-Context-Protocol
+ 
+ 2. **Set up a virtual environment (recommended):**
 
-- **DuckDuckGo Search**
-- **Weather API Tool** (`@h1deya/mcp-server-weather`)
-- **MongoDB Tool** (via both `mongodb-mcp-server` and local `mongo_tools.py`)
-
-Defined inside `browser_mcp.json` using:
-
-```json
-{
-  "mcpServers": {
-    "duckduckgo-search": {
-      "command": "npx",
-      "args": ["-y", "duckduckgo-mcp-server"]
-    },
-    "weather": {
-      "command": "npx",
-      "args": ["-y", "@h1deya/mcp-server-weather"]
-    },
-    "MongoDB": {
-      "command": "npx",
-      "args": ["-y", "mongodb-mcp-server", "--connectionString", "mongodb://localhost:27017/MCP_Sample"]
-    },
-    "mongo": {
-      "command": "uv",
-      "args": [
-        "run",
-        "--with",
-        "mcp[cli]",
-        "mcp",
-        "run",
-        "C:\\Users\\G3NZ\\Summer2025\\MCP_DataBase\\mcp_tools\\mongo_tools.py"
-      ]
-    }
-  }
-}
 ```
-## ⚙️ How to Run
-### Clone this repository
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
-https://github.com/Saad7912/Model-Context-Protocol.git
+3. **Install dependencies:**
 ```
-### Install dependencies
+langchain
+langchain-groq
+mcp[cli]
+fastapi
+pymongo
+pydantic
+uvicorn
+fastapi_mcp
 ```
-pip install -r requirements.txt
+4. **Configure MongoDB:**
 ```
-### Set your Groq API key
-Create a .env file in the root and add:
+- Ensure MongoDB is running on mongodb://localhost:27017.
+- Create a database with collections.
+```
+5. **Set Groq API Key** (for LLM agent):
 ```
 GROQ_API_KEY=your-groq-api-key-here
 ```
-### Run the app
-```
-python app.py
-```
 
+## **Running the Project**
+ 1. **LLM Agent:**
+   1. Start MCP servers (defined in browser_mcp.json):
+      
+   ```
+   npx -y duckduckgo-mcp-server
+   npx -y @h1deya/mcp-server-weather
+   npx -y mongodb-mcp-server --connectionString mongodb://localhost:27017/MCP_Sample
+   uv run --with mcp[cli] mcp run ./agent/mongo_tools.py
+```
+  2. **Run the agent:**
+   ```
+   uv run app.py
+```
+  3. Interact via the chat interface or MCP Inspector.
+
+2.  FastAPI MongoDB Server
+   1. Start the server:
+      ```
+      uvicorn api.main:app --host 0.0.0.0 --port 4444
+      ```
+  2. Open MCP Inspector:
+      - Set URL to http://localhost:4444/mcp, transport to SSE.
+
+## Endpoints (FastAPI)
+**/find (Find Documents)**
+ - **Method:** POST
+ - **Input:**
+   - collection: String (e.g., layout_1000).
+   - query_json: JSON string (e.g., {"name": "DummyData"}).
+- Output: {"results": [...]} (list of matching documents).
+- **Example:**
+  ```
+  curl -X POST http://localhost:4444/find -H "Content-Type: application/json" -d '{"collection": "layout_1000", "query": {"name": "DummyData"}}'
+
+- **Inspector:** Set collection: "layout_1000", query_json: {"name": "DummyData"}.
+
+## Testing
+- **MCP Inspector** (FastAPI):
+  - Open http://127.0.0.1:6274 in Chrome.
+  - Select endpoint (e.g., find_documents_find_post).
+  - Enter inputs (e.g., query_json: {"source_code": "code"}).
+- **MongoDB Compass:**
+   - Connect to mongodb://localhost:27017/MCP_Sample.
+   - Verify documents or schemas.
+- **Logs:**
+  - Check terminal for DEBUG, WARNING, or ERROR messages.
+
+## Contributing
+Submit issues or pull requests to improve the agent or API!
+
+## License
+MIT License
