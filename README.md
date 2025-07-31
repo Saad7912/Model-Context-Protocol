@@ -28,12 +28,12 @@ This project combines a **Model Context Protocol (MCP)**-enabled conversational 
   - **Groq API Key:** Required for the LLM agent.
  
   ## Installation
-  1. **Clone the repository:**
+1. **Clone the repository:**
   ```
   git clone https://github.com/Saad7912/Model-Context-Protocol.git
   cd Model-Context-Protocol
- 
- 2. **Set up a virtual environment (recommended):**
+ ```
+2. **Set up a virtual environment (recommended):**
 
 ```
 python -m venv venv
@@ -62,9 +62,7 @@ GROQ_API_KEY=your-groq-api-key-here
 
 ## **Running the Project**
 1. **LLM Agent:**
-   1. Start MCP servers (defined in browser_mcp.json):
-   2. **Run the agent:**
-      
+   1. Start MCP servers (defined in browser_mcp.json):      
    ```
    npx -y duckduckgo-mcp-server
    npx -y @h1deya/mcp-server-weather
@@ -78,7 +76,7 @@ GROQ_API_KEY=your-groq-api-key-here
    3. **Interact via the chat interface or MCP Inspector.**
 
 
-1. **FastAPI MongoDB Server:**
+2. **FastAPI MongoDB Server:**
    1. **Start the server:**
       ```
       uvicorn api.main:app --host 0.0.0.0 --port 4444
