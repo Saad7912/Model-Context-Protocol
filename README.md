@@ -63,25 +63,27 @@ GROQ_API_KEY=your-groq-api-key-here
 ## **Running the Project**
 1. **LLM Agent:**
    1. Start MCP servers (defined in browser_mcp.json):
+   2. **Run the agent:**
       
    ```
    npx -y duckduckgo-mcp-server
    npx -y @h1deya/mcp-server-weather
    npx -y mongodb-mcp-server --connectionString mongodb://localhost:27017/MCP_Sample
    uv run --with mcp[cli] mcp run ./agent/mongo_tools.py
-
-  2. **Run the agent:**
+``
+   2. **Run the agent:**
    ```
    uv run app.py
 ```
-  3. Interact via the chat interface or MCP Inspector.
+   3. **Interact via the chat interface or MCP Inspector.**
 
-2.  **FastAPI MongoDB Server**
+
+1. **FastAPI MongoDB Server:**
    1. **Start the server:**
       ```
       uvicorn api.main:app --host 0.0.0.0 --port 4444
       ```
-  2. **Open MCP Inspector:**
+   2. **Open MCP Inspecto:**
       - Set URL to http://localhost:4444/mcp, transport to SSE.
 
 ## Endpoints (FastAPI)
