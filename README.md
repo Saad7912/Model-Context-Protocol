@@ -62,6 +62,7 @@ GROQ_API_KEY=your-groq-api-key-here
 
 ## **Running the Project**
 1. **LLM Agent:**
+   
    i. Start MCP servers (defined in browser_mcp.json):      
    ```
    npx -y duckduckgo-mcp-server
@@ -79,6 +80,7 @@ GROQ_API_KEY=your-groq-api-key-here
 
 
 2. **FastAPI MongoDB Server:**
+   
    i. **Start the server:**
       ```
       uvicorn api.main:app --host 0.0.0.0 --port 4444
