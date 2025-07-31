@@ -61,7 +61,7 @@ GROQ_API_KEY=your-groq-api-key-here
 ```
 
 ## **Running the Project**
- 1. **LLM Agent:**
+1. **LLM Agent:**
    1. Start MCP servers (defined in browser_mcp.json):
       
    ```
@@ -69,19 +69,19 @@ GROQ_API_KEY=your-groq-api-key-here
    npx -y @h1deya/mcp-server-weather
    npx -y mongodb-mcp-server --connectionString mongodb://localhost:27017/MCP_Sample
    uv run --with mcp[cli] mcp run ./agent/mongo_tools.py
-```
+
   2. **Run the agent:**
    ```
    uv run app.py
 ```
   3. Interact via the chat interface or MCP Inspector.
 
-2.  FastAPI MongoDB Server
-   1. Start the server:
+2.  **FastAPI MongoDB Server**
+   1. **Start the server:**
       ```
       uvicorn api.main:app --host 0.0.0.0 --port 4444
       ```
-  2. Open MCP Inspector:
+  2. **Open MCP Inspector:**
       - Set URL to http://localhost:4444/mcp, transport to SSE.
 
 ## Endpoints (FastAPI)
@@ -97,6 +97,27 @@ GROQ_API_KEY=your-groq-api-key-here
 
 - **Inspector:** Set collection: "layout_1000", query_json: {"name": "DummyData"}.
 
+**/insert (Insert Document)**
+- **Method:** POST
+- **Input:**
+  - collection: String (e.g., layout_1000).
+  - document_json: JSON string (e.g., {"name": "TestData", "address": "0x123"}).
+- **Output:** {"inserted_id": "<id>"}.
+- **Example:**
+  ```
+  curl -X POST http://localhost:4444/insert -H "Content-Type: application/json" -d '{"collection": "layout_1000", "document": {"name": "TestData", "address": "0x123"}}'
+- Inspector: Set collection: "layout_1000", document_json: {"name": "TestData"}.
+
+**/schema (Get Collection Schema)**
+- **Method:** POST
+- **Input:**
+  - collection: String (e.g., layout_1000).
+- **Output:** {"fields": [{"name": "name", "types": ["str"]}, ...]}.
+- **Example:**
+  ```
+  curl -X POST http://localhost:4444/schema -H "Content-Type: application/json" -d '{"collection": "layout_1000"}'
+- Inspector: Set collection: "layout_1000".
+  
 ## Testing
 - **MCP Inspector** (FastAPI):
   - Open http://127.0.0.1:6274 in Chrome.
